@@ -121,10 +121,22 @@ cmake --build . --config Release</code></pre>
 
     <div class="step">
       <div class="step-label">5 &mdash; One-shot mode (for scripts)</div>
-      <pre><code>./bin/llama-completion \
-  -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
-  -c 512 \
-  -p "What is Fedora Linux?"</code></pre>
+      <pre><code>PROMPT="What is Fedora Linux?"
+
+RESPONSE=$(
+  LLAMA_LOG_VERBOSITY=1 ./bin/llama-completion \
+    -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
+    -p "$PROMPT" \
+    -n 100 \
+    -c 512 \
+    -no-cnv \
+    -r "&lt;eor&gt;" \
+    --simple-io \
+    --color off \
+    --no-display-prompt
+)
+
+printf '%s\n' "$RESPONSE"</code></pre>
       <div class="check">Prints the answer and exits. No interactive prompt.</div>
       <div class="dim">This is how you call an LLM from a script.</div>
     </div>
