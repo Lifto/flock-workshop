@@ -37,6 +37,7 @@
     flex: 1;
     align-content: start;
   }
+  .left, .right { min-width: 0; }
 
   .step { margin-bottom: 1.2vh; }
   .step-label {
@@ -183,15 +184,16 @@ RESPONSE_CLEAN=$(echo "$RESPONSE_CLEAN" \
 echo "&#x1f916; $RESPONSE_CLEAN"
 echo "$RESPONSE_CLEAN" | espeak
 TALKSCRIPT
-chmod +x ~/chatbot/talk-rag.sh</code></pre>
+</code></pre>
     </div>
 
     <div class="step">
       <div class="step-label">5 &mdash; Run it!</div>
-      <pre><code>cd ~/chatbot
+      <pre><code>chmod +x ~/chatbot/talk-rag.sh
+cd ~/chatbot
 ./talk-rag.sh</code></pre>
       <div class="check">Ask about Fedora &mdash; the answer now uses real documentation.</div>
-      <div class="dim">Try: <em>What is the recommended tool for upgrading between major releases on Fedora Silverblue?</em></div>
+      <div class="dim">Try: <em>How do I upgrade between major releases on Fedora Silverblue?</em></div>
     </div>
 
   </div>
