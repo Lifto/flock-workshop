@@ -39,7 +39,7 @@ RESPONSE=$(
     -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
     -p "$PROMPT" \
     -n 150 \
-    -c 4096 \
+    -c 512 \
     -no-cnv \
     -r "<eor>" \
     --simple-io \
