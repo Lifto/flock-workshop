@@ -6,7 +6,7 @@
 <title>Phase 2: Voice Chat — Flock 2026</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; overflow: hidden; }
+  html, body { height: 100%; }
   body {
     font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
     background: #0d1117;
@@ -74,6 +74,7 @@
   }
   .check::before { content: '\2713\00a0'; font-weight: bold; }
   .dim { font-size: 0.9vw; color: #8b949e; margin-top: 0.3vh; }
+  pre.tall { max-height: 52vh; overflow-y: auto; }
 
   .bottom {
     font-size: 1.1vw; color: #8b949e; margin-top: auto;
@@ -130,8 +131,8 @@ make</code></pre>
   <div class="right">
 
     <div class="step">
-      <div class="step-label">5 &mdash; Create talk.sh</div>
-      <pre><code>cat &gt; ~/chatbot/talk.sh &lt;&lt; 'TALKSCRIPT'
+      <div class="step-label">5 &mdash; Create talk.sh <a href="talk.sh" download style="font-weight:400; font-size:0.9vw; color:#58a6ff; text-decoration:none; text-transform:none; letter-spacing:0;">&#x2B73; download</a></div>
+      <pre class="tall"><code>cat &gt; ~/chatbot/talk.sh &lt;&lt; 'TALKSCRIPT'
 #!/usr/bin/env bash
 set -e
 AUDIO=input.wav
@@ -152,7 +153,7 @@ RESPONSE=$(
     -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
     -p "$TRANSCRIPT" \
     -n 150 \
-    -c 4096 \
+    -c 512 \
     -no-cnv \
     -r "&lt;eor&gt;" \
     --simple-io \
