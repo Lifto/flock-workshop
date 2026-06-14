@@ -75,9 +75,28 @@
   .check::before { content: '\2713\00a0'; font-weight: bold; }
   .dim { font-size: 0.9vw; color: #adbac7; margin-top: 0.3vh; }
 
+  .left { display: flex; flex-direction: column; }
+  .pull-quote {
+    border-left: 3px solid #58a6ff;
+    padding-left: 1.2vw;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-style: italic;
+    font-size: 1.4vw;
+    color: #e6edf3;
+    line-height: 1.6;
+  }
+
   .bottom {
-    font-size: 1.1vw; color: #adbac7; margin-top: auto;
-    padding-top: 1vh; line-height: 1.5;
+    margin-top: auto;
+    padding-top: 1vh;
+  }
+  .url-bar {
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 2.5vw; font-weight: 700;
+    color: #58a6ff;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.5), 0 0 25px rgba(88, 166, 255, 0.2);
   }
 </style>
 </head>
@@ -86,7 +105,7 @@
 <div class="header">
   <span class="phase-num">Phase 1</span>
   <span class="phase-title">First Chat</span>
-  <span style="margin-left:auto; font-family:'SF Mono',Menlo,Consolas,monospace; font-size:1.3vw; color:#58a6ff;">lifto.github.io/flock-workshop/phase1.html</span>
+
 </div>
 
 <div class="content">
@@ -113,6 +132,10 @@ mkdir build &amp;&amp; cd build
 cmake .. -DLLAMA_BUILD_EXAMPLES=ON
 cmake --build . --config Release</code></pre>
       <div class="note">&#9202; 5&ndash;10 min build. Help a neighbor while you wait.</div>
+    </div>
+
+    <div class="pull-quote">
+      That&rsquo;s all there is to it. An LLM is running on your local machine. This is all an LLM ever does! Text in, text out. Anything else we call &ldquo;AI&rdquo; is traditional software wrapped around that.
     </div>
 
   </div>
@@ -156,10 +179,12 @@ printf '%s\n' "$RESPONSE"</code></pre>
 
 </div>
 
-<div class="bottom" style="display:flex; justify-content:space-between; align-items:flex-end;">
-  <span>That&rsquo;s all there is to it. An LLM is running on your local machine. This is all an LLM ever does! Text in, text out. Anything else we call &ldquo;AI&rdquo; is traditional software wrapped around that.<br>
-  <a href="https://ai.fedoraproject.org/running-an-open-source-ai-chatbot-on-lean-hardware-with-fedora-part-1-our-first-chat/" style="color:#58a6ff; font-size:0.9vw; text-decoration:none;">Blog: ai.fedoraproject.org &mdash; Part 1: Our First Chat</a></span>
-  <a href="phase2.html" style="color:#58a6ff; text-decoration:none; font-size:1vw;">Phase 2: Voice Chat &rarr;</a>
+<div class="bottom">
+  <div class="url-bar">lifto.github.io/flock-workshop/phase1.html</div>
+  <div style="display:flex; justify-content:space-between; font-size:1vw; color:#adbac7; margin-top:0.5vh;">
+    <a href="https://ai.fedoraproject.org/running-an-open-source-ai-chatbot-on-lean-hardware-with-fedora-part-1-our-first-chat/" style="color:#58a6ff; text-decoration:none;">Blog: ai.fedoraproject.org &mdash; Part 1: Our First Chat</a>
+    <a href="phase2.html" style="color:#58a6ff; text-decoration:none;">Phase 2: Voice Chat &rarr;</a>
+  </div>
 </div>
 
 <script>

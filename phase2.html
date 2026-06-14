@@ -77,8 +77,15 @@
   pre.tall { max-height: 52vh; overflow-y: auto; }
 
   .bottom {
-    font-size: 1.1vw; color: #adbac7; margin-top: auto;
-    padding-top: 1vh; line-height: 1.5;
+    margin-top: auto;
+    padding-top: 1vh;
+  }
+  .url-bar {
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 2.5vw; font-weight: 700;
+    color: #58a6ff;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.5), 0 0 25px rgba(88, 166, 255, 0.2);
   }
 </style>
 </head>
@@ -87,7 +94,7 @@
 <div class="header">
   <span class="phase-num">Phase 2</span>
   <span class="phase-title">Voice Chat</span>
-  <span style="margin-left:auto; font-family:'SF Mono',Menlo,Consolas,monospace; font-size:1.3vw; color:#58a6ff;">lifto.github.io/flock-workshop/phase2.html</span>
+
 </div>
 
 <div class="content">
@@ -180,10 +187,12 @@ cd ~/chatbot
 
 </div>
 
-<div class="bottom" style="display:flex; justify-content:space-between; align-items:flex-end;">
-  <span>&larr; <a href="phase1.html" style="color:#58a6ff; text-decoration:none;">Phase 1: First Chat</a><br>
-  <a href="https://ai.fedoraproject.org/running-an-open-source-ai-chatbot-on-lean-hardware-with-fedora-part-2-lets-talk/" style="color:#58a6ff; font-size:0.9vw; text-decoration:none;">Blog: ai.fedoraproject.org &mdash; Part 2: Let&rsquo;s Talk</a></span>
-  <a href="phase3.html" style="color:#58a6ff; text-decoration:none; font-size:1.1vw;">Phase 3: Knowledge &rarr;</a>
+<div class="bottom">
+  <div class="url-bar">lifto.github.io/flock-workshop/phase2.html</div>
+  <div style="display:flex; justify-content:space-between; font-size:1vw; margin-top:0.5vh;">
+    <span>&larr; <a href="phase1.html" style="color:#58a6ff; text-decoration:none;">Phase 1: First Chat</a> &nbsp; <a href="https://ai.fedoraproject.org/running-an-open-source-ai-chatbot-on-lean-hardware-with-fedora-part-2-lets-talk/" style="color:#58a6ff; text-decoration:none;">Blog: Part 2</a></span>
+    <a href="phase3.html" style="color:#58a6ff; text-decoration:none;">Phase 3: Knowledge &rarr;</a>
+  </div>
 </div>
 
 <script>
