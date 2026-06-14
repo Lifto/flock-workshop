@@ -48,7 +48,18 @@
   pre {
     background: #161b22; border: 1px solid #30363d; border-radius: 6px;
     padding: 0.6vh 0.8vw; overflow-x: auto;
+    position: relative;
   }
+  .copy-btn {
+    position: absolute; top: 0.4vh; right: 0.4vw;
+    background: #30363d; color: #8b949e; border: 1px solid #484f58;
+    border-radius: 4px; padding: 0.2vh 0.5vw;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.75vw; cursor: pointer; line-height: 1.4;
+    transition: background 0.15s, color 0.15s;
+  }
+  .copy-btn:hover { background: #484f58; color: #e6edf3; }
+  .copy-btn.copied { background: #238636; color: #fff; border-color: #238636; }
   pre code {
     font-family: 'SF Mono', Menlo, Consolas, monospace;
     font-size: 1.05vw; color: #e6edf3;
@@ -152,5 +163,21 @@ printf '%s\n' "$RESPONSE"</code></pre>
   <span style="font-family:'SF Mono',Menlo,Consolas,monospace; color:#58a6ff; font-size:1vw; text-align:right; white-space:nowrap;">Files: http://<span id="localip" contenteditable title="Click to edit IP" style="border-bottom:1px dashed #58a6ff;">EDIT_IP</span>:8080</span>
 </div>
 
+<script>
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'Copy';
+  btn.addEventListener('click', () => {
+    const text = pre.querySelector('code').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
 </body>
 </html>
