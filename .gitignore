@@ -1,0 +1,6 @@
+models/
+*.gguf
+*.bin
+*.sql
+*.tar.gz
+*.iso

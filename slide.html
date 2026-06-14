@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 1: First Chat — Flock 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5vh 4vw 1.5vh;
+  }
+
+  .header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2vw;
+    margin-bottom: 1.5vh;
+  }
+  .phase-num {
+    font-size: 2vw; font-weight: 800; color: #238636;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .phase-title {
+    font-size: 3vw; font-weight: 700; color: #e6edf3;
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
+    flex: 1;
+    align-content: start;
+  }
+
+  .step { margin-bottom: 1.2vh; }
+  .step-label {
+    font-size: 1.15vw; font-weight: 700; color: #238636;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 0.4vh;
+  }
+
+  pre {
+    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+    padding: 0.6vh 0.8vw; overflow-x: auto;
+  }
+  pre code {
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 1.05vw; color: #e6edf3;
+    white-space: pre; line-height: 1.55;
+  }
+
+  .note {
+    font-size: 0.95vw; color: #d29922; margin-top: 0.3vh;
+  }
+  .check {
+    font-size: 0.95vw; color: #3fb950; margin-top: 0.3vh;
+  }
+  .check::before { content: '\2713\00a0'; font-weight: bold; }
+  .dim { font-size: 0.9vw; color: #8b949e; margin-top: 0.3vh; }
+
+  .bottom {
+    font-size: 1.1vw; color: #8b949e; margin-top: auto;
+    padding-top: 1vh; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="phase-num">Phase 1</span>
+  <span class="phase-title">First Chat</span>
+</div>
+
+<div class="content">
+
+  <div class="left">
+
+    <div class="step">
+      <div class="step-label">1 &mdash; Install build tools</div>
+      <pre><code>sudo dnf install -y cmake make gcc git gcc-c++ libcurl-devel</code></pre>
+    </div>
+
+    <div class="step">
+      <div class="step-label">2 &mdash; Get files from USB</div>
+      <pre><code>mkdir ~/chatbot &amp;&amp; cd ~/chatbot
+cp /run/media/$USER/DISK_IMG/llama.cpp-b7783.tar.gz .
+cp /run/media/$USER/DISK_IMG/*.gguf .
+tar xzf llama.cpp-b7783.tar.gz</code></pre>
+      <div class="dim">At home: <code style="color:#e6edf3">git clone --branch b7783 --depth 1 https://github.com/ggerganov/llama.cpp</code></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">3 &mdash; Build</div>
+      <pre><code>cd ~/chatbot/llama.cpp
+mkdir build &amp;&amp; cd build
+cmake .. -DLLAMA_BUILD_EXAMPLES=ON
+cmake --build . --config Release</code></pre>
+      <div class="note">&#9202; 5&ndash;10 min build. Help a neighbor while you wait.</div>
+    </div>
+
+  </div>
+
+  <div class="right">
+
+    <div class="step">
+      <div class="step-label">4 &mdash; Chat!</div>
+      <pre><code>cd ~/chatbot/llama.cpp/build
+./bin/llama-cli \
+  -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
+  -c 4096 \
+  -p "You are a helpful assistant."</code></pre>
+      <div class="check">You see a <code style="color:#e6edf3">&gt;</code> prompt. Ask it something.</div>
+      <div class="dim">Type <code style="color:#e6edf3">/exit</code> to quit.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">5 &mdash; Change the prompt</div>
+      <pre><code>./bin/llama-cli \
+  -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
+  -c 4096 \
+  -p "You are a mass-market paperback
+romance novelist. Answer everything
+as if narrating a scene."</code></pre>
+      <div class="dim">Same model, different <code style="color:#e6edf3">-p</code>, different personality.<br>
+        Try: pirate, Shakespearean scholar, a cat who learned to type&hellip;</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="bottom">
+  That&rsquo;s it &mdash; you&rsquo;re running an LLM on your own machine.
+  No cloud, no API key, no account. Everything else is old tech wrapped around this.
+</div>
+
+</body>
+</html>
