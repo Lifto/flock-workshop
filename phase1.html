@@ -113,7 +113,7 @@ cmake --build . --config Release</code></pre>
       <pre><code>cd ~/chatbot/llama.cpp/build
 ./bin/llama-cli \
   -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
-  -c 4096 \
+  -c 512 \
   -p "You are a helpful assistant."</code></pre>
       <div class="check">You see a <code style="color:#e6edf3">&gt;</code> prompt. Ask it something.</div>
       <div class="dim">Type <code style="color:#e6edf3">/exit</code> to quit.</div>
@@ -123,7 +123,7 @@ cmake --build . --config Release</code></pre>
       <div class="step-label">5 &mdash; Change the prompt</div>
       <pre><code>./bin/llama-cli \
   -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
-  -c 4096 \
+  -c 512 \
   -p "You are a mass-market paperback
 romance novelist. Answer everything
 as if narrating a scene."</code></pre>
