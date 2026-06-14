@@ -120,15 +120,13 @@ cmake --build . --config Release</code></pre>
     </div>
 
     <div class="step">
-      <div class="step-label">5 &mdash; Change the prompt</div>
-      <pre><code>./bin/llama-cli \
+      <div class="step-label">5 &mdash; One-shot mode (for scripts)</div>
+      <pre><code>./bin/llama-completion \
   -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
   -c 512 \
-  -p "You are a mass-market paperback
-romance novelist. Answer everything
-as if narrating a scene."</code></pre>
-      <div class="dim">Same model, different <code style="color:#e6edf3">-p</code>, different personality.<br>
-        Try: pirate, Shakespearean scholar, a cat who learned to type&hellip;</div>
+  -p "What is Fedora Linux?"</code></pre>
+      <div class="check">Prints the answer and exits. No interactive prompt.</div>
+      <div class="dim">This is how you call an LLM from a script.</div>
     </div>
 
   </div>
