@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phase 1: First Chat — Flock 2026</title>
+<title>Phase 2: Voice Chat — Flock 2026</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; overflow: hidden; }
@@ -84,9 +84,9 @@
 <body>
 
 <div class="header">
-  <span class="phase-num">Phase 1</span>
-  <span class="phase-title">First Chat</span>
-  <span style="margin-left:auto; font-family:'SF Mono',Menlo,Consolas,monospace; font-size:1.3vw; color:#58a6ff;">lifto.github.io/flock-workshop/phase1.html</span>
+  <span class="phase-num">Phase 2</span>
+  <span class="phase-title">Voice Chat</span>
+  <span style="margin-left:auto; font-family:'SF Mono',Menlo,Consolas,monospace; font-size:1.3vw; color:#58a6ff;">lifto.github.io/flock-workshop/phase2.html</span>
 </div>
 
 <div class="content">
@@ -94,25 +94,35 @@
   <div class="left">
 
     <div class="step">
-      <div class="step-label">1 &mdash; Install build tools</div>
-      <pre><code>sudo dnf install -y cmake make gcc git gcc-c++ libcurl-devel</code></pre>
+      <div class="step-label">1 &mdash; Install audio tools</div>
+      <pre><code>sudo dnf install -y alsa-utils portaudio-devel espeak</code></pre>
     </div>
 
     <div class="step">
-      <div class="step-label">2 &mdash; Get files from USB</div>
-      <pre><code>mkdir ~/chatbot &amp;&amp; cd ~/chatbot
-cp /run/media/$USER/DISK_IMG/* .
-tar xzf llama.cpp-b7783.tar.gz</code></pre>
-      <div class="dim">At home: <code style="color:#e6edf3">git clone --branch b7783 --depth 1 https://github.com/ggerganov/llama.cpp</code></div>
+      <div class="step-label">2 &mdash; Test your microphone</div>
+      <pre><code>cd ~/chatbot
+arecord -f S16_LE -r 16000 -d 5 input.wav</code></pre>
+      <div class="check">Speak for 5 seconds. You should see recording progress.</div>
     </div>
 
     <div class="step">
-      <div class="step-label">3 &mdash; Build</div>
-      <pre><code>cd ~/chatbot/llama.cpp
-mkdir build &amp;&amp; cd build
-cmake .. -DLLAMA_BUILD_EXAMPLES=ON
-cmake --build . --config Release</code></pre>
-      <div class="note">&#9202; 5&ndash;10 min build. Help a neighbor while you wait.</div>
+      <div class="step-label">3 &mdash; Build whisper.cpp</div>
+      <pre><code>cd ~/chatbot
+git clone --branch v1.8.3 --depth 1 \
+  https://github.com/ggerganov/whisper.cpp
+cd whisper.cpp
+make</code></pre>
+      <pre><code>cp ~/chatbot/ggml-base.en.bin ~/chatbot/whisper.cpp/models/</code></pre>
+      <div class="note">&#9202; 2&ndash;3 min build.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">4 &mdash; Test speech-to-text</div>
+      <pre><code>cd ~/chatbot/whisper.cpp
+./build/bin/whisper-cli \
+  -m models/ggml-base.en.bin \
+  -f ../input.wav</code></pre>
+      <div class="check">You should see your words transcribed as text.</div>
     </div>
 
   </div>
@@ -120,26 +130,29 @@ cmake --build . --config Release</code></pre>
   <div class="right">
 
     <div class="step">
-      <div class="step-label">4 &mdash; Chat!</div>
-      <pre><code>cd ~/chatbot/llama.cpp/build
-./bin/llama-cli \
-  -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
-  -c 512 \
-  -p "You are a helpful assistant."</code></pre>
-      <div class="check">You see a <code style="color:#e6edf3">&gt;</code> prompt. Ask it something.</div>
-      <div class="dim">Type <code style="color:#e6edf3">/exit</code> to quit.</div>
-    </div>
+      <div class="step-label">5 &mdash; Create talk.sh</div>
+      <pre><code>cat &gt; ~/chatbot/talk.sh &lt;&lt; 'TALKSCRIPT'
+#!/usr/bin/env bash
+set -e
+AUDIO=input.wav
 
-    <div class="step">
-      <div class="step-label">5 &mdash; One-shot mode (for scripts)</div>
-      <pre><code>PROMPT="What is Fedora Linux?"
+echo "&#x1f399;&#xfe0f;  Speak now..."
+arecord -f S16_LE -r 16000 -d 5 -q "$AUDIO"
+
+TRANSCRIPT=$(./whisper.cpp/build/bin/whisper-cli \
+  -m ./whisper.cpp/models/ggml-base.en.bin \
+  -f "$AUDIO" \
+  | grep '^\[' \
+  | sed -E 's/^\[[^]]+\][[:space:]]*//' \
+  | tr -d '\n')
+echo "&#x1f5e3;&#xfe0f;  $TRANSCRIPT"
 
 RESPONSE=$(
-  LLAMA_LOG_VERBOSITY=1 ./bin/llama-completion \
+  LLAMA_LOG_VERBOSITY=1 ./llama.cpp/build/bin/llama-completion \
     -m ~/chatbot/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf \
-    -p "$PROMPT" \
-    -n 100 \
-    -c 512 \
+    -p "$TRANSCRIPT" \
+    -n 150 \
+    -c 4096 \
     -no-cnv \
     -r "&lt;eor&gt;" \
     --simple-io \
@@ -147,9 +160,18 @@ RESPONSE=$(
     --no-display-prompt
 )
 
-printf '%s\n' "$RESPONSE"</code></pre>
-      <div class="check">Prints the answer and exits. No interactive prompt.</div>
-      <div class="dim">This is how you call an LLM from a script.</div>
+echo "&#x1f916; $RESPONSE"
+echo "$RESPONSE" | espeak
+TALKSCRIPT
+chmod +x ~/chatbot/talk.sh</code></pre>
+    </div>
+
+    <div class="step">
+      <div class="step-label">6 &mdash; Run it!</div>
+      <pre><code>cd ~/chatbot
+./talk.sh</code></pre>
+      <div class="check">You speak &rarr; it transcribes &rarr; LLM responds &rarr; you hear it. Full loop!</div>
+      <div class="dim">Try: <em>Who are your favorite fictional artificial intelligences?</em></div>
     </div>
 
   </div>
@@ -157,12 +179,8 @@ printf '%s\n' "$RESPONSE"</code></pre>
 </div>
 
 <div class="bottom" style="display:flex; justify-content:space-between; align-items:flex-end;">
-  <span>That&rsquo;s all there is to it. An LLM is running on your local machine. This is all an LLM ever does! Text in, text out. Anything else we call &ldquo;AI&rdquo; is traditional software wrapped around that.<br>
-  <a href="https://ai.fedoraproject.org/running-an-open-source-ai-chatbot-on-lean-hardware-with-fedora-part-1-our-first-chat/" style="color:#58a6ff; font-size:0.9vw; text-decoration:none;">Blog: ai.fedoraproject.org &mdash; Part 1: Our First Chat</a></span>
-  <span style="display:flex; flex-direction:column; align-items:flex-end; gap:0.3vh;">
-    <span style="font-family:'SF Mono',Menlo,Consolas,monospace; color:#58a6ff; font-size:1vw; white-space:nowrap;">Files: http://<span id="localip" contenteditable title="Click to edit IP" style="border-bottom:1px dashed #58a6ff;">EDIT_IP</span>:8080</span>
-    <a href="phase2.html" style="color:#58a6ff; text-decoration:none; font-size:1vw;">Phase 2: Voice Chat &rarr;</a>
-  </span>
+  <span>&larr; <a href="phase1.html" style="color:#58a6ff; text-decoration:none;">Phase 1: First Chat</a></span>
+  <span style="font-family:'SF Mono',Menlo,Consolas,monospace; color:#58a6ff; font-size:1vw; text-align:right; white-space:nowrap;">Files: http://<span id="localip" contenteditable title="Click to edit IP" style="border-bottom:1px dashed #58a6ff;">EDIT_IP</span>:8080</span>
 </div>
 
 <script>
